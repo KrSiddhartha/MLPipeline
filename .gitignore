@@ -1,2 +1,5 @@
 complaints.csv
 complaints.csv.zip
+valid.csv
+.ipynb_checkpoints/
+__pycache__/
