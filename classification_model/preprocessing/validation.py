@@ -1,25 +1,39 @@
 from typing import List, Optional, Tuple
+
+import pandas as pd
 from pydantic import BaseModel, ValidationError
+from classification_model.config.core import config
 
 
-def validate_inputs(*, input_data: str) -> Tuple[str, Optional[dict]]:
+def validate_inputs(*, input_data: pd.DataFrame) -> Tuple[str, Optional[dict]]:
     """Check model inputs for unprocessable values."""
 
-    # convert syntax error field names (beginning with numbers)
-    inpt = input_data
+    validated_data = input_data[[config.model_config.INDEPENDENT_FEATURES]].copy()
+    validated_data.rename(
+        columns=
+        {config.model_config.INDEPENDENT_FEATURES: ''.join('_' if i == ' '
+                                                           else i.upper()
+                                                           for i in config.model_config.INDEPENDENT_FEATURES)},
+        inplace=True)
+
     errors = None
 
     try:
         # replace numpy nans so that pydantic can validate
-        MultipleConsumerComplaintInputs(inputs=inpt)
+        MultipleConsumerComplaintInputs(inputs=validated_data.to_dict(orient="records"))
     except ValidationError as error:
         errors = error.json()
 
-    return inpt, errors
+    validated_data.rename(
+        columns=
+        {validated_data.columns[0]: config.model_config.INDEPENDENT_FEATURES},
+        inplace=True)
+
+    return validated_data, errors
 
 
 class ConsumerComplaintInputSchema(BaseModel):
-    INDEPENDENT_FEATURES: str
+    CONSUMER_COMPLAINT_NARRATIVE: str
 
 
 class MultipleConsumerComplaintInputs(BaseModel):

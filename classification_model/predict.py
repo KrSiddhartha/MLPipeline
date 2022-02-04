@@ -20,18 +20,19 @@ _model_load = load_trained(file_name=save_file_name_model)
 
 def make_prediction(
     *,
-    input_data: t.Union[str, dict],
+    input_data: t.Union[pd.DataFrame, dict],
 ) -> dict:
     """Make a prediction using a saved model pipeline."""
 
     data = input_data
     validated_data, errors = validate_inputs(input_data=data)
+    validated_data = validated_data[config.model_config.INDEPENDENT_FEATURES]
     results = {"predictions": None, "version": _version, "errors": errors}
 
     if not errors:
-        predictions = np.argmax(_model_load.predict(_text_process_pipe.transform(pd.Series(validated_data))), axis=-1)
+        predictions = np.argmax(_model_load.predict(_text_process_pipe.transform(validated_data)), axis=-1)
         results = {
-            "predictions": [np.exp(pred) for pred in predictions],  # type: ignore
+            "predictions": list(_lab_enc.inverse_transform(predictions)),
             "version": _version,
             "errors": errors,
         }
