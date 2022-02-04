@@ -1,0 +1,152 @@
+absl-py==0.15.0
+alembic==1.7.5
+arrow==1.2.1
+astunparse==1.6.3
+attrs==21.4.0
+backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
+boto3==1.20.44
+botocore==1.23.44
+Bottleneck==1.3.2
+bravado==11.0.3
+bravado-core==5.17.0
+cachetools==5.0.0
+certifi==2021.10.8
+charset-normalizer==2.0.10
+click==8.0.3
+cloudpickle==2.0.0
+colorama @ file:///tmp/build/80754af9/colorama_1607707115595/work
+cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
+Cython==0.29.23
+databricks-cli==0.16.2
+debugpy @ file:///C:/ci/debugpy_1637073815078/work
+decorator @ file:///tmp/build/80754af9/decorator_1632776554403/work
+docker==5.0.3
+entrypoints==0.3
+feature-engine==1.2.0
+Flask==2.0.2
+flatbuffers==1.12
+fonttools==4.25.0
+fqdn==1.5.1
+future==0.18.2
+gast==0.3.3
+gensim==4.1.2
+gitdb==4.0.9
+GitPython==3.1.26
+google-auth==2.4.1
+google-auth-oauthlib==0.4.6
+google-pasta==0.2.0
+greenlet==1.1.2
+grpcio==1.32.0
+h5py==2.10.0
+idna==3.3
+importlib-metadata==4.10.1
+importlib-resources==5.4.0
+ipykernel @ file:///C:/ci/ipykernel_1633545574250/work/dist/ipykernel-6.4.1-py3-none-any.whl
+ipython @ file:///C:/ci/ipython_1635944310712/work
+ipython-autotime==0.3.1
+ipython-genutils @ file:///tmp/build/80754af9/ipython_genutils_1606773439826/work
+isoduration==20.11.0
+itsdangerous==2.0.1
+jedi @ file:///C:/ci/jedi_1611315808330/work
+Jinja2==3.0.3
+jmespath==0.10.0
+joblib==1.1.0
+jsonpointer==2.2
+jsonref==0.2
+jsonschema==4.4.0
+jupyter-client @ file:///tmp/build/80754af9/jupyter_client_1640335223713/work
+jupyter-core @ file:///C:/ci/jupyter_core_1636537213213/work
+keras==2.7.0
+Keras-Preprocessing==1.1.2
+kiwisolver @ file:///C:/ci/kiwisolver_1612282606037/work
+libclang==12.0.0
+lxml==4.7.1
+Mako==1.1.6
+Markdown==3.3.6
+MarkupSafe==2.0.1
+matplotlib @ file:///C:/ci/matplotlib-suite_1638289827560/work
+matplotlib-inline @ file:///tmp/build/80754af9/matplotlib-inline_1628242447089/work
+missingno==0.5.0
+mkl-fft==1.3.1
+mkl-random @ file:///C:/ci/mkl_random_1626186184278/work
+mkl-service==2.4.0
+mlflow==1.23.1
+monotonic==1.6
+msgpack==1.0.3
+munkres==1.1.4
+neptune-client==0.14.2
+neptune-tensorflow-keras==0.9.9
+nest-asyncio @ file:///tmp/build/80754af9/nest-asyncio_1613680548246/work
+nltk==3.6.7
+numexpr @ file:///C:/ci/numexpr_1640704408721/work
+numpy==1.19.5
+oauthlib==3.1.1
+olefile @ file:///Users/ktietz/demo/mc3/conda-bld/olefile_1629805411829/work
+opt-einsum==3.3.0
+packaging @ file:///tmp/build/80754af9/packaging_1637314298585/work
+pandas @ file:///C:/ci/pandas_1641443171711/work
+parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
+patsy==0.5.2
+pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
+Pillow==8.4.0
+prometheus-client==0.13.0
+prometheus-flask-exporter==0.18.7
+prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1633440160888/work
+protobuf==3.19.3
+psutil==5.9.0
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+Pygments @ file:///tmp/build/80754af9/pygments_1629234116488/work
+PyJWT==2.3.0
+pyparsing @ file:///tmp/build/80754af9/pyparsing_1635766073266/work
+pyrsistent==0.18.1
+python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
+pytz==2021.3
+pywin32==227
+PyYAML==6.0
+pyzmq @ file:///C:/ci/pyzmq_1638435185959/work
+querystring-parser==1.2.4
+regex @ file:///C:/ci/regex_1629302316714/work
+requests==2.27.1
+requests-oauthlib==1.3.0
+rfc3339-validator==0.1.4
+rfc3987==1.3.8
+rsa==4.8
+s3transfer==0.5.0
+scikit-learn==1.0.2
+scipy==1.7.3
+seaborn==0.11.2
+simplejson==3.17.6
+sip==4.19.13
+six==1.15.0
+smart-open==5.2.1
+smmap==5.0.0
+SQLAlchemy==1.4.31
+sqlparse==0.4.2
+statsmodels==0.13.1
+swagger-spec-validator==2.7.4
+tabulate==0.8.9
+tensorboard==2.8.0
+tensorboard-data-server==0.6.1
+tensorboard-plugin-wit==1.8.1
+tensorflow==2.4.0
+tensorflow-estimator==2.4.0
+tensorflow-io-gcs-filesystem==0.23.1
+termcolor==1.1.0
+threadpoolctl==3.0.0
+tornado @ file:///C:/ci/tornado_1606942392901/work
+tqdm==4.62.3
+traitlets @ file:///tmp/build/80754af9/traitlets_1636710298902/work
+typing-extensions==3.7.4.3
+uri-template==1.1.0
+urllib3==1.26.8
+waitress==2.0.0
+wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
+webcolors==1.11.1
+websocket-client==1.2.3
+Werkzeug==2.0.2
+wget==3.2
+wincertstore==0.2
+wrapt==1.12.1
+xgboost==1.5.2
+zipp==3.7.0

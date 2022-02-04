@@ -1,0 +1,40 @@
+# Package Overview
+package_name: classification_model
+
+
+# Data Files
+training_data_file: train.csv
+test_data_file: test.csv
+
+model_save_file: classification_model_output_v
+
+# Dependent variable
+DEPENDENT_FEATURES: Product
+
+# Independent variables
+INDEPENDENT_FEATURES: Consumer complaint narrative
+
+# Padding size
+MAX_LENGHT: 140
+
+# Model parameters
+PARAMS_LSTM:
+  MODEL_NAME: Bi-Directional-LSTM
+  batch_size: 512
+  epochs: 100
+  lr: 0.0003
+  validation_split: 0.3
+  verbose: 1
+
+# Word2Vec config
+PARAMS_WORD2VEC:
+  EPOCHS: 50
+  MIN_COUNT: 2
+  SG: 1
+  VECTOR_SIZE: 160
+  WINDOW: 7
+
+# Random state
+RANDOM_STATE: 0
+
+TEST_SIZE: 3000
