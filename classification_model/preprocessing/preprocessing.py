@@ -1,12 +1,12 @@
 import string
+
 import regex as re
 from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
-from nltk.stem import WordNetLemmatizer
+from nltk.stem import PorterStemmer, WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.base import BaseEstimator, TransformerMixin
-from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer
 
 
 class textcleanup(BaseEstimator, TransformerMixin):
@@ -28,10 +28,20 @@ class textcleanup(BaseEstimator, TransformerMixin):
     def transform(self, X):
         X = X.copy()
         X = X.apply(
-            lambda x: re.sub(r' +', ' ',  # Replace extra space by a single space
-                             re.sub(r'x{2,}', ' ',  # Replace masked values by single space
-                                    re.sub(r'[^a-z]', ' ',  # Replace all values other than alphabets with single space
-                                           x.lower()))))  # Convert all alphabets to lower case
+            lambda x: re.sub(
+                r" +",
+                " ",  # Replace extra space by a single space
+                re.sub(
+                    r"x{2,}",
+                    " ",  # Replace masked values by single space
+                    re.sub(
+                        r"[^a-z]",
+                        " ",  # Replace all values other than alphabets with single space
+                        x.lower(),
+                    ),
+                ),
+            )
+        )  # Convert all alphabets to lower case
         X = X.str.strip()  # Remove leading and trailing spaces
 
         return X
@@ -78,7 +88,7 @@ class textstopwordremove(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         X = X.copy()
-        Stopwords = stopwords.words('English')
+        Stopwords = stopwords.words("English")
         Stopwords += [i for i in string.ascii_lowercase]
         X = X.apply(lambda x: [i for i in x if i not in Stopwords])
 
@@ -128,17 +138,16 @@ class textstemmer(BaseEstimator, TransformerMixin):
     def transform(self, X):
         X = X.copy()
         stemmer = PorterStemmer()
-        X = X.apply(lambda x: ' '.join([stemmer.stem(i) for i in x]))
+        X = X.apply(lambda x: " ".join([stemmer.stem(i) for i in x]))
         X = X.str.strip()  # Remove leading and trailing spaces
 
         return X
 
 
 class texttokenize2(BaseEstimator, TransformerMixin):
-
     def __init__(self, variable):
         if not isinstance(variable, int):
-            raise ValueError('variable should be a integer')
+            raise ValueError("variable should be a integer")
 
         self.variable = variable
 
@@ -151,6 +160,4 @@ class texttokenize2(BaseEstimator, TransformerMixin):
     def transform(self, X):
         X = X.copy()
 
-        return pad_sequences(
-            self.token.texts_to_sequences(X),
-            maxlen=self.variable)
+        return pad_sequences(self.token.texts_to_sequences(X), maxlen=self.variable)

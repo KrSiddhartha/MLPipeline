@@ -2,6 +2,7 @@ from typing import List, Optional, Tuple
 
 import pandas as pd
 from pydantic import BaseModel, ValidationError
+
 from classification_model.config.core import config
 
 
@@ -10,11 +11,14 @@ def validate_inputs(*, input_data: pd.DataFrame) -> Tuple[str, Optional[dict]]:
 
     validated_data = input_data[[config.model_config.INDEPENDENT_FEATURES]].copy()
     validated_data.rename(
-        columns=
-        {config.model_config.INDEPENDENT_FEATURES: ''.join('_' if i == ' '
-                                                           else i.upper()
-                                                           for i in config.model_config.INDEPENDENT_FEATURES)},
-        inplace=True)
+        columns={
+            config.model_config.INDEPENDENT_FEATURES: "".join(
+                "_" if i == " " else i.upper()
+                for i in config.model_config.INDEPENDENT_FEATURES
+            )
+        },
+        inplace=True,
+    )
 
     errors = None
 
@@ -25,9 +29,9 @@ def validate_inputs(*, input_data: pd.DataFrame) -> Tuple[str, Optional[dict]]:
         errors = error.json()
 
     validated_data.rename(
-        columns=
-        {validated_data.columns[0]: config.model_config.INDEPENDENT_FEATURES},
-        inplace=True)
+        columns={validated_data.columns[0]: config.model_config.INDEPENDENT_FEATURES},
+        inplace=True,
+    )
 
     return validated_data, errors
 

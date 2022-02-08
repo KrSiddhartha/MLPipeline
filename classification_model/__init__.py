@@ -1,4 +1,5 @@
 import logging
+
 from classification_model.config.core import PACKAGE_ROOT, config
 
 # It is strongly advised that you do not add any handlers other than

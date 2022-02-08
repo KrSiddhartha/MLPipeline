@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, Union, List, Sequence
+from typing import Dict
 
 from pydantic import BaseModel
 from strictyaml import YAML, load
