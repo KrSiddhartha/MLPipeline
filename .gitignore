@@ -2,6 +2,7 @@
 .neptune/
 .pytest_cache/
 .tox/
+tmp/
 comp_classify/
 complaintClassify.egg-info/
 dist/
@@ -18,4 +19,3 @@ research/complaints.csv.zip
 research/valid.csv
 research/Bi-Directional-LSTM_model.h5
 research/LSTM_model.h5
-
