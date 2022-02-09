@@ -1,0 +1,7 @@
+.idea/
+.mypy_cache/
+.tox/
+app/__pycache__/
+comp_classify_api/
+app/schemas/__pycache__/
+app/tests/__pycache__/
