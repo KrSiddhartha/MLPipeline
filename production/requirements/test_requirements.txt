@@ -1,4 +1,5 @@
 -r requirements.txt
+-r production_requirements.txt
 
 # testing requirements
 pytest>=6.2.3,<6.3.0

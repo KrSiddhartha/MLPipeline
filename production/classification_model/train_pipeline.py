@@ -2,11 +2,11 @@ from datetime import datetime
 
 import neptune.new as neptune
 import numpy as np
+import tensorflow as tf
 from gensim.models.word2vec import Word2Vec
 from neptune.new.integrations.tensorflow_keras import NeptuneCallback
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-import tensorflow as tf
 from tensorflow.keras import layers, metrics
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential
@@ -145,13 +145,15 @@ def run_training() -> None:
     tf.saved_model.save(modelLSTM, save_path_model.__str__().replace(".tflite", ""))
 
     # Converting a SavedModel to a TensorFlow Lite model.
-    converter = tf.lite.TFLiteConverter.from_saved_model(save_path_model.__str__().replace(".tflite", ""))
+    converter = tf.lite.TFLiteConverter.from_saved_model(
+        save_path_model.__str__().replace(".tflite", "")
+    )
 
     # Optimizing the model
     optimize = "Speed"
-    if optimize == 'Speed':
+    if optimize == "Speed":
         converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_LATENCY]
-    elif optimize == 'Storage':
+    elif optimize == "Storage":
         converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
     else:
         converter.optimizations = [tf.lite.Optimize.DEFAULT]

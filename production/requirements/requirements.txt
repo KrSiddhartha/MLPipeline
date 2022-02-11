@@ -2,8 +2,6 @@ nltk==3.6.7
 numpy==1.19.5
 pandas==1.4.0
 pydantic>=1.8.1,<1.9.0
-#PyYAML==6.0
 scikit-learn==1.0.2
-#seaborn==0.11.2
 strictyaml==1.6.1
-tflite-runtime==2.5.0
+tflite-runtime>=2.5.0,<2.8.0

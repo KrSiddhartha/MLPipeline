@@ -29,9 +29,7 @@ def save_pipeline(pipeline_to_persist, label_enc):
     )
     save_path_pp = TRAINED_MODEL_DIR / save_file_name_pp
 
-    remove_old_pipelines(
-        files_to_keep=[save_file_name_enc, save_file_name_pp]
-    )
+    remove_old_pipelines(files_to_keep=[save_file_name_enc, save_file_name_pp])
     joblib.dump(pipeline_to_persist, save_path_pp)
     joblib.dump(label_enc, save_path_enc)
 

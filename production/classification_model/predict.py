@@ -37,8 +37,11 @@ def make_prediction(
             # set the tensor to point to the input data to be inferred
             _model_load.set_tensor(
                 _model_load.get_input_details()[0]["index"],  # input index
-                np.array(np.expand_dims(  # input tensor
-                    processed_data[indx], 0), dtype=np.float32))
+                np.array(
+                    np.expand_dims(processed_data[indx], 0),  # input tensor
+                    dtype=np.float32,
+                ),
+            )
 
             # Run the inference
             _model_load.invoke()
@@ -46,9 +49,12 @@ def make_prediction(
                 _lab_enc.inverse_transform(
                     np.argmax(
                         _model_load.get_tensor(
-                            _model_load.get_output_details()[0]['index']
-                        ), axis=-1)
-                )[0])
+                            _model_load.get_output_details()[0]["index"]
+                        ),
+                        axis=-1,
+                    )
+                )[0]
+            )
 
         results = {
             "predictions": predictions,

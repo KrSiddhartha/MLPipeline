@@ -40,3 +40,7 @@ Change Log
 1.0.0 (11/02/2022)
 ------------------
 - Tflite implementatiion for reducing size
+
+1.0.1 (11/02/2022)
+------------------
+- Requirement bug fix
