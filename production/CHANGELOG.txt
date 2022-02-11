@@ -44,3 +44,8 @@ Change Log
 1.0.1 (11/02/2022)
 ------------------
 - Requirement bug fix
+
+1.0.2 (11/02/2022)
+------------------
+- NLTK stopwords "English" to "english"
+

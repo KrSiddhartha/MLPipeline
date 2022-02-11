@@ -588,7 +588,7 @@ class textstopwordremove(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         X = X.copy()
-        Stopwords = stopwords.words("English")
+        Stopwords = stopwords.words("english")
         Stopwords += [i for i in string.ascii_lowercase]
         X = X.apply(lambda x: [i for i in x if i not in Stopwords])
 
