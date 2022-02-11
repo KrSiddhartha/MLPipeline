@@ -6,6 +6,7 @@ from gensim.models.word2vec import Word2Vec
 from neptune.new.integrations.tensorflow_keras import NeptuneCallback
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+import tensorflow as tf
 from tensorflow.keras import layers, metrics
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential
@@ -124,7 +125,7 @@ def run_training() -> None:
             "Sid",
         ]
     )
-    save_file_name_model = f"{config.app_config.model_save_file}{_version}.h5"
+    save_file_name_model = f"{config.app_config.model_save_file}{_version}.tflite"
     save_path_model = TRAINED_MODEL_DIR / save_file_name_model
     neptune_clbk = NeptuneCallback(run=run, base_namespace="metrics")
 
@@ -140,8 +141,29 @@ def run_training() -> None:
     )
 
     # persist trained model
-    save_pipeline(text_process_pipe, lab_enc, modelLSTM)
+    save_pipeline(text_process_pipe, lab_enc)
+    tf.saved_model.save(modelLSTM, save_path_model.__str__().replace(".tflite", ""))
 
+    # Converting a SavedModel to a TensorFlow Lite model.
+    converter = tf.lite.TFLiteConverter.from_saved_model(save_path_model.__str__().replace(".tflite", ""))
+
+    # Optimizing the model
+    optimize = "Speed"
+    if optimize == 'Speed':
+        converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_LATENCY]
+    elif optimize == 'Storage':
+        converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+    else:
+        converter.optimizations = [tf.lite.Optimize.DEFAULT]
+
+    # reduce the size of a floating point model by quantizing the weights to float16
+    converter.target_spec.supported_types = [tf.float16]
+    tflite_quant_model = converter.convert()
+
+    # Writing the flat buffer TFLIte model to a binary file
+    open(save_path_model.__str__(), "wb").write(tflite_quant_model)
+
+    # Evaluation metrics calculation
     ytrain_pred = np.argmax(modelLSTM.predict(xtrain), axis=-1)
     ytrain_orig = np.argmax(ytrain_enc, axis=-1)
     train_classreport = me.classification_report_cust(
