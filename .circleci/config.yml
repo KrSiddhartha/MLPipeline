@@ -20,13 +20,13 @@ prepare_tox: &prepare_tox
       sudo pip install --upgrade pip
       pip install --user tox
 
-fetch_data: &fetch_data
+prepare_build_twine: &prepare_build_twine
   run:
-    name: Set script permissions and fetch data
+    name: Install build and twine
     command: |
-      source venv/bin/activate
-      chmod +x ./scripts/fetch_kaggle_dataset.sh
-      ./scripts/fetch_kaggle_dataset.sh
+      pip install --user build
+      pip install --user twine
+
 
 jobs:
   production_test_and_upload_classification_model:
@@ -36,6 +36,7 @@ jobs:
       - checkout:
           path: ~/project
       - *prepare_tox
+      - *prepare_build_twine
       - run:
           name: Fetch the data
           command: |
@@ -241,8 +242,9 @@ tags_only: &tags_only
 
 workflows:
   version: 2
-  section_07:
+  production:
     jobs:
+      - production_test_and_upload_classification_model
       - api_test_app
       - api_deploy_app_to_heroku:
           requires:

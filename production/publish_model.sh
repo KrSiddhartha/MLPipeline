@@ -2,8 +2,9 @@
 
 # Building packages and uploading them to a Gemfury repository
 
-# GEMFURY_URL=$GEMFURY_PUSH_URL
-PYPI_URL=https://upload.pypi.org/legacy/
+# PUBLISH_URL=$GEMFURY_PUSH_URL
+echo "Start"
+PUBLISH_URL="https://upload.pypi.org/legacy/"
 
 set -e
 
@@ -27,12 +28,14 @@ build() {
     [ ! -e $SETUP ] && warn "No $SETUP file, skipping" && return
     PACKAGE_NAME=$(python $SETUP --fullname)
     echo "Package $PACKAGE_NAME"
-    python "$SETUP" build || die "Building package $PACKAGE_NAME failed"
-    for X in $(ls dist)
-    do
-        # curl -F package=@"dist/$X" "$GEMFURY_URL" || die "Uploading package $PACKAGE_NAME failed on file dist/$X"
-		curl -F package=@"dist/$X" "$PYPI_URL" || die "Uploading package $PACKAGE_NAME failed on file dist/$X"
-    done
+    python -m build || die "Building package $PACKAGE_NAME failed"
+	twine upload --repository-url "$PUBLISH_URL" dist/* || die "Uploading package $PACKAGE_NAME failed on file dist/$X"
+    # for X in $(ls dist)
+    # do
+        # # curl -F package=@"dist/$X" "$GEMFURY_URL" || die "Uploading package $PACKAGE_NAME failed on file dist/$X"
+		
+		# curl -F package=@"dist/$X" "$PUBLISH_URL" || die "Uploading package $PACKAGE_NAME failed on file dist/$X"
+    # done
 }
 
 if [ -n "$DIRS" ]; then

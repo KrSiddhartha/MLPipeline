@@ -1,3 +1,4 @@
+feature-engine==1.2.0
 gensim==4.1.2
 neptune-client==0.14.3
 neptune-tensorflow-keras==0.9.9
@@ -11,3 +12,4 @@ seaborn==0.11.2
 strictyaml==1.6.1
 tflite-runtime>=2.5.0,<=2.7.0
 tensorflow==2.4.0
+wget==3.2

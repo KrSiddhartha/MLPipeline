@@ -16,6 +16,8 @@ TRAINED_MODEL_DIR = PACKAGE_ROOT / "trained_models"
 
 class AppConfig(BaseModel):
     package_name: str
+    data_url: str
+    data_referesh: bool
     training_data_file: str
     test_data_file: str
     model_save_file: str
@@ -36,7 +38,9 @@ class ModelConfig(BaseModel):
     MAX_LENGHT: int
     PARAMS_LSTM: ParamsLstm
     PARAMS_WORD2VEC: Dict[str, int]
+    PRODUCT_MAPPING: Dict[str, str]
     RANDOM_STATE: int
+    TRAIN_SIZE: int
     TEST_SIZE: int
 
 
