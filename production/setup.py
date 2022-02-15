@@ -45,7 +45,6 @@ setup(
     url=URL,
     packages=find_packages(exclude=("tests",
                                     "research",
-                                    "consumer_complaint_classification_model.egg-info",
                                     "comp_classify",
                                     "tmp_venv")),
     package_data={"classification_model": ["VERSION"]},
