@@ -38,9 +38,9 @@ jobs:
       - *prepare_tox
       - *prepare_build_twine
       - run:
-          name: Fetch the data
+          name: Publish model to PyPi
           command: |
-            tox -e fetch_data
+            tox -e publish_model
       - run:
           name: Test the model
           command: |
@@ -49,11 +49,7 @@ jobs:
           # name: Publish model to Gemfury
           # command: |
             # tox -e publish_model
-      - run:
-          name: Publish model to PyPi
-          command: |
-            tox -e publish_model
-
+      
   api_test_app:
     <<: *defaults
     working_directory: ~/project/api
