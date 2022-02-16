@@ -99,7 +99,7 @@ def run_training() -> None:
     # Model Registry
     print(os.environ)
     run = neptune.init(
-        api_token=os.environ["NEPTUNE_API_TOKEN"],
+        # api_token=os.environ["NEPTUNE_API_TOKEN"],
         project="kumars/Consumer-Complaint",
     )
 
