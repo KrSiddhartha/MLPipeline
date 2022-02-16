@@ -66,6 +66,7 @@ jobs:
       - checkout:
           path: ~/project
       - *prepare_tox
+      - *prepare_nltk
       - run:
           name: Runnning app tests
           command: |
