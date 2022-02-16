@@ -45,10 +45,6 @@ jobs:
           path: ~/project
       - *prepare_tox
       - *prepare_build_twine
-      - run:
-          name: Get data
-          command: |
-            tox -e fetch_data
       - *prepare_nltk
       - run:
           name: Test the model
