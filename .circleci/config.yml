@@ -46,14 +46,14 @@ jobs:
       - *prepare_tox
       - *prepare_build_twine
       - *prepare_nltk
-      - run:
-          name: Test the model
-          command: |
-            tox
       # - run:
-          # name: Publish model to PyPi
-          # command: |
-            # tox -e publish_model
+         # name: Test the model
+         # command: |
+          #  tox
+      - run:
+          name: Publish model to PyPi
+          command: |
+            tox -e publish_model
       # - run:
           # name: Publish model to Gemfury
           # command: |
@@ -66,6 +66,7 @@ jobs:
       - checkout:
           path: ~/project
       - *prepare_tox
+      - *prepare_nltk
       - run:
           name: Runnning app tests
           command: |
@@ -256,10 +257,11 @@ workflows:
       - api_deploy_app_to_heroku:
           requires:
             - api_test_app
-          filters:
-            branches:
-              only:
-                - master
+      - deploy_app_container_in_heroku
+          # filters:
+            # branches:
+              # only:
+                # - master
       # # upload after git tags are created
       # - production_test_and_upload_classification_model:
           # <<: *tags_only

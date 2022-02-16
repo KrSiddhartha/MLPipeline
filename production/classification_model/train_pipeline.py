@@ -1,4 +1,3 @@
-import os
 import shutil
 from datetime import datetime
 
@@ -98,10 +97,10 @@ def run_training() -> None:
 
     # Model Registry
     run = neptune.init(
-        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmU" +
-                  "uYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS" +
-                  "5haSIsImFwaV9rZXkiOiJmMDg0MGJlMS1hYjQ4LTQ3YmQtO" +
-                  "TM0NC04M2U4ZDcwZGU3MzUifQ==",
+        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmU"
+        + "uYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS"
+        + "5haSIsImFwaV9rZXkiOiJmMDg0MGJlMS1hYjQ4LTQ3YmQtO"
+        + "TM0NC04M2U4ZDcwZGU3MzUifQ==",
         project="kumars/Consumer-Complaint",
     )
 
