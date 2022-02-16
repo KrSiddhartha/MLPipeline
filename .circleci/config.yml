@@ -24,9 +24,17 @@ prepare_build_twine: &prepare_build_twine
   run:
     name: Install build and twine
     command: |
+      sudo pip install --upgrade pip
       pip install --user build
       pip install --user twine
 
+prepare_nltk: &prepare_nltk
+  run:
+    name: Install and set nltk data
+    command: |
+      sudo pip install --upgrade pip
+      pip install --user nltk
+      python -m nltk.downloader -d /usr/share/nltk_data punkt omw-1.4 wordnet stopwords  
 
 jobs:
   production_test_and_upload_classification_model:
@@ -41,6 +49,7 @@ jobs:
           name: Get data
           command: |
             tox -e fetch_data
+      - *prepare_nltk
       - run:
           name: Test the model
           command: |
@@ -245,7 +254,9 @@ workflows:
   production:
     jobs:
       - production_test_and_upload_classification_model
-      - api_test_app
+      - api_test_app:
+          requires:
+            - production_test_and_upload_classification_model
       - api_deploy_app_to_heroku:
           requires:
             - api_test_app
