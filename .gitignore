@@ -12,6 +12,12 @@ production/classification_model/config/__pycache__/
 production/classification_model/preprocessing/__pycache__/
 production/classification_model/trained_models/*.joblib
 production/classification_model/trained_models/*.tflite
+production/classification_model/datasets/test_classification_report.csv
+production/classification_model/datasets/test_confusionmatrix.png
+production/classification_model/datasets/train_classification_report.csv
+production/classification_model/datasets/train_confusionmatrix.png
+production/classification_model/datasets/train.csv
+production/classification_model/datasets/test.csv
 api/app/
 api/comp_classify_api/
 research/complaints.csv

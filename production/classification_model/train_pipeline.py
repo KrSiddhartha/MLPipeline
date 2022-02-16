@@ -1,3 +1,5 @@
+import os
+import shutil
 from datetime import datetime
 
 import neptune.new as neptune
@@ -5,7 +7,6 @@ import numpy as np
 import tensorflow as tf
 from gensim.models.word2vec import Word2Vec
 from neptune.new.integrations.tensorflow_keras import NeptuneCallback
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras import layers, metrics
 from tensorflow.keras.callbacks import EarlyStopping
@@ -14,7 +15,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.utils import to_categorical
 
 from classification_model import __version__ as _version
-from classification_model.config.core import TRAINED_MODEL_DIR, config
+from classification_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, config
 from classification_model.pipeline import text_process_pipe
 from classification_model.preprocessing.data_manager import load_dataset, save_pipeline
 from classification_model.preprocessing.modelevaluation import modeleval as me
@@ -25,24 +26,21 @@ def run_training() -> None:
 
     # read training data
     data = load_dataset(file_name=config.app_config.training_data_file)
+    data_test = load_dataset(file_name=config.app_config.test_data_file)
 
-    # divide train and test
-    xtrain, xtest, ytrain, ytest = train_test_split(
-        data[config.model_config.INDEPENDENT_FEATURES],  # predictors
-        data[config.model_config.DEPENDENT_FEATURES],
-        stratify=data[config.model_config.DEPENDENT_FEATURES],
-        test_size=config.model_config.TEST_SIZE,
-        # we are setting the random seed here
-        # for reproducibility
-        random_state=config.model_config.RANDOM_STATE,
-    )
+    # Encoding target variable
     lab_enc = LabelEncoder()
-    ytrain = lab_enc.fit_transform(ytrain)
+    ytrain = lab_enc.fit_transform(data[config.model_config.DEPENDENT_FEATURES])
+    ytest = lab_enc.transform(data_test[config.model_config.DEPENDENT_FEATURES])
     ytrain_enc = to_categorical(ytrain)
+    ytest_enc = to_categorical(ytest)
 
     # preprocessing
-    text_process_pipe.fit(xtrain)
-    xtrain = text_process_pipe.transform(xtrain)
+    text_process_pipe.fit(data[config.model_config.INDEPENDENT_FEATURES])
+    xtrain = text_process_pipe.transform(data[config.model_config.INDEPENDENT_FEATURES])
+    xtest = text_process_pipe.transform(
+        data_test[config.model_config.INDEPENDENT_FEATURES]
+    )
     word_index = eval(
         text_process_pipe.named_steps["text_token"].token.get_config()["word_index"]
     )
@@ -91,7 +89,6 @@ def run_training() -> None:
         optimizer=optimizer,
         metrics=[
             "accuracy",
-            metrics.CategoricalAccuracy(),
             metrics.Precision(),
             metrics.Recall(),
         ],
@@ -101,9 +98,7 @@ def run_training() -> None:
 
     # Model Registry
     run = neptune.init(
-        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJ"
-        + "hcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXk"
-        + "iOiJmMDg0MGJlMS1hYjQ4LTQ3YmQtOTM0NC04M2U4ZDcwZGU3MzUifQ==",
+        api_token=os.environ["NEPTUNE_API_TOKEN"],
         project="kumars/Consumer-Complaint",
     )
 
@@ -122,7 +117,7 @@ def run_training() -> None:
             "Model evaluation",
             "LSTM Bidirectional",
             "Production",
-            "Sid",
+            _version,
         ]
     )
     save_file_name_model = f"{config.app_config.model_save_file}{_version}.tflite"
@@ -164,20 +159,69 @@ def run_training() -> None:
 
     # Writing the flat buffer TFLIte model to a binary file
     open(save_path_model.__str__(), "wb").write(tflite_quant_model)
+    shutil.rmtree(save_path_model.__str__().replace(".tflite", ""))
 
     # Evaluation metrics calculation
     ytrain_pred = np.argmax(modelLSTM.predict(xtrain), axis=-1)
     ytrain_orig = np.argmax(ytrain_enc, axis=-1)
+    ytest_pred = np.argmax(modelLSTM.predict(xtest), axis=-1)
+    ytest_orig = np.argmax(ytest_enc, axis=-1)
+
     train_classreport = me.classification_report_cust(
         ytrain_orig, ytrain_pred, list(lab_enc.classes_)
     )
+    train_classreport.to_csv(
+        DATASET_DIR / "train_classification_report.csv", index=False
+    )
+    me.confusion_mat_plt(
+        ytrain_orig, ytrain_pred, 8, figs=(18, 13), cat_names=list(lab_enc.classes_)
+    ).savefig(DATASET_DIR / "train_confusionmatrix.png")
+
+    test_classreport = me.classification_report_cust(
+        ytest_orig, ytest_pred, list(lab_enc.classes_)
+    )
+    test_classreport.to_csv(DATASET_DIR / "test_classification_report.csv", index=False)
+    me.confusion_mat_plt(
+        ytest_orig, ytest_pred, 8, figs=(18, 13), cat_names=list(lab_enc.classes_)
+    ).savefig(DATASET_DIR / "test_confusionmatrix.png")
+
     run["train/f1"] = train_classreport[train_classreport["class"] == "weighted avg"][
         "f1_score"
     ].values[0]
     run["train/acc"] = train_classreport[train_classreport["class"] == "accuracy"][
-        "support"
+        "f1_score"
     ].values[0]
-    run["model"].upload(save_path_model.__str__())
+    run["test/f1"] = test_classreport[test_classreport["class"] == "weighted avg"][
+        "f1_score"
+    ].values[0]
+    run["test/acc"] = test_classreport[test_classreport["class"] == "accuracy"][
+        "f1_score"
+    ].values[0]
+
+    # Track files
+    track_dir = DATASET_DIR.__str__().replace("\\", "/") + "/"
+    save_file_name_enc = f"{config.app_config.model_save_file}{_version}.joblib"
+    save_path_enc = TRAINED_MODEL_DIR / save_file_name_enc
+    save_file_name_pp = (
+        f"{config.app_config.model_save_file}_preprocess{_version}.joblib"
+    )
+    save_path_pp = TRAINED_MODEL_DIR / save_file_name_pp
+
+    run["train/train_classification_report.csv"].upload(
+        track_dir + "train_classification_report.csv"
+    )
+    run["test/test_classification_report.csv"].upload(
+        track_dir + "test_classification_report.csv"
+    )
+    run["train/train_confusionmatrix.png"].upload(
+        track_dir + "train_confusionmatrix.png"
+    )
+    run["test/test_confusionmatrix.png"].upload(track_dir + "test_confusionmatrix.png")
+    run["train/train.csv"].upload(track_dir + "train.csv")
+    run["test/test.csv"].upload(track_dir + "test.csv")
+    run[save_file_name_pp].upload(save_path_pp.__str__())
+    run[save_file_name_enc].upload(save_path_enc.__str__())
+    run[save_file_name_model].upload(save_path_model.__str__())
 
     # Stop model registry run
     run.stop()

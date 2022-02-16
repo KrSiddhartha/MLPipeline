@@ -3,6 +3,10 @@ recursive-include ./classification_model/*
 exclude ./classification_model/.neptune/*
 exclude ./classification_model/datasets/data_fetch.py
 exclude ./classification_model/preprocessing/preprocessorRawdata.py
+exclude ./classification_model/datasets/test_classification_report.csv
+exclude ./classification_model/datasets/test_confusionmatrix.png
+exclude ./classification_model/datasets/train_classification_report.csv
+exclude ./classification_model/datasets/train_confusionmatrix.png
 include ./classification_model/datasets/train.csv
 include ./classification_model/datasets/test.csv
 include ./classification_model/trained_models/*.joblib

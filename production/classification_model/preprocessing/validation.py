@@ -6,7 +6,7 @@ from pydantic import BaseModel, ValidationError
 from classification_model.config.core import config
 
 
-def validate_inputs(*, input_data: pd.DataFrame) -> Tuple[str, Optional[dict]]:
+def validate_inputs(*, input_data: pd.DataFrame) -> Tuple[pd.DataFrame, Optional[dict]]:
     """Check model inputs for unprocessable values."""
 
     validated_data = input_data[[config.model_config.INDEPENDENT_FEATURES]].copy()

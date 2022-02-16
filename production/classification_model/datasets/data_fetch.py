@@ -75,9 +75,12 @@ def datafetch() -> None:
 if __name__ == "__main__":
     if "test.csv" in os.listdir() and "train.csv" in os.listdir():
         if config.app_config.data_referesh:
-            print("Data refresh")
+            print("Refereshing data")
             datafetch()
+        else:
+            print("Data already there")
     else:
+        print("Fetching data")
         datafetch()
 
     os.chdir(default_pth)

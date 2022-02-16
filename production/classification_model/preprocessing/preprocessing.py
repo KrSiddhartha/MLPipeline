@@ -199,7 +199,7 @@ class Tokenizer(object):
         char_level=False,
         oov_token=None,
         document_count=0,
-        **kwargs
+        **kwargs,
     ):
         # Legacy support
         if "nb_words" in kwargs:

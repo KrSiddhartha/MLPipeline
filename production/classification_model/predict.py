@@ -26,9 +26,9 @@ def make_prediction(
 
     data = input_data
     validated_data, errors = validate_inputs(input_data=data)
-    validated_data = validated_data[config.model_config.INDEPENDENT_FEATURES]
-    processed_data = _text_process_pipe.transform(validated_data)
-    results = {"predictions": None, "version": _version, "errors": errors}
+    processed_data = _text_process_pipe.transform(
+        validated_data[config.model_config.INDEPENDENT_FEATURES]
+    )
 
     if not errors:
         predictions = []
@@ -61,5 +61,7 @@ def make_prediction(
             "version": _version,
             "errors": errors,
         }
+    else:
+        results = {"predictions": None, "version": _version, "errors": errors}
 
     return results

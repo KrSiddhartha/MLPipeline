@@ -26,24 +26,32 @@ class modeleval:
             ax.xaxis.set_ticklabels(cat_names)
             ax.yaxis.set_ticklabels(cat_names)
 
-        plt.show()
+        # plt.show()
+        plt.close(fig)
 
         return fig
 
     def classification_report_cust(ytrain, ypred, cat_names=None):
         report = metrics.classification_report(ytrain, ypred, target_names=cat_names)
+        len_cat = max(len(x) for x in cat_names)
         report_data = []
         lines = report.split("\n")
         for line in lines[2:]:
             if line != "":
                 row = {}
-                row_data = line.strip().split("      ")
-                row_data = [np.nan if i == "" else i for i in row_data]
-                row["class"] = row_data[0]
-                row["precision"] = float(row_data[1])
-                row["recall"] = float(row_data[2])
-                row["f1_score"] = float(row_data[3])
-                row["support"] = float(row_data[4])
+                row_class = line[:len_cat].strip()
+                row_data = [i for i in line[len_cat:].split(" ") if i != ""]
+                if row_class == "accuracy":
+                    row["class"] = row_class
+                    row["f1_score"] = float(row_data[0])
+                    row["support"] = float(row_data[1])
+                else:
+                    row["class"] = row_class
+                    row["precision"] = float(row_data[0])
+                    row["recall"] = float(row_data[1])
+                    row["f1_score"] = float(row_data[2])
+                    row["support"] = float(row_data[3])
+
                 report_data.append(row)
 
         return pd.DataFrame.from_dict(report_data)
