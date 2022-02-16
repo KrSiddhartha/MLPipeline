@@ -241,20 +241,20 @@ workflows:
   production:
     jobs:
       - production_test_and_upload_classification_model
-      - api_test_app
-      - api_deploy_app_to_heroku:
-          requires:
-            - api_test_app
-          filters:
-            branches:
-              only:
-                - master
-      # upload after git tags are created
-      - production_test_and_upload_classification_model:
-          <<: *tags_only
-      - deploy_app_container_in_heroku:
-          filters:
-            branches:
-              only:
-                - master
-
+      # - api_test_app
+      # - api_deploy_app_to_heroku:
+          # requires:
+            # - api_test_app
+          # filters:
+            # branches:
+              # only:
+                # - master
+      # # upload after git tags are created
+      # - production_test_and_upload_classification_model:
+          # <<: *tags_only
+      # - deploy_app_container_in_heroku:
+          # filters:
+            # branches:
+              # only:
+                # - master
+                
