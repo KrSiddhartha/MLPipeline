@@ -34,7 +34,7 @@ prepare_nltk: &prepare_nltk
     command: |
       sudo pip install --upgrade pip
       pip install --user nltk
-      python -m nltk.downloader -d /usr/share/nltk_data punkt omw-1.4 wordnet stopwords  
+      python -m nltk.downloader -d /home/circleci/nltk_data punkt omw-1.4 wordnet stopwords  
 
 jobs:
   production_test_and_upload_classification_model:
