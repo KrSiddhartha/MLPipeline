@@ -46,14 +46,14 @@ jobs:
       - *prepare_tox
       - *prepare_build_twine
       - *prepare_nltk
-      - run:
-          name: Test the model
-          command: |
-            tox
       # - run:
-          # name: Publish model to PyPi
-          # command: |
-            # tox -e publish_model
+         # name: Test the model
+         # command: |
+          #  tox
+      - run:
+          name: Publish model to PyPi
+          command: |
+            tox -e publish_model
       # - run:
           # name: Publish model to Gemfury
           # command: |
