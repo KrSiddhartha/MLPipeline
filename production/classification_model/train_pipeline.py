@@ -97,9 +97,11 @@ def run_training() -> None:
     modelLSTM.summary()
 
     # Model Registry
-    print(os.environ)
     run = neptune.init(
-        # api_token=os.environ["NEPTUNE_API_TOKEN"],
+        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmU" +
+                  "uYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS" +
+                  "5haSIsImFwaV9rZXkiOiJmMDg0MGJlMS1hYjQ4LTQ3YmQtO" +
+                  "TM0NC04M2U4ZDcwZGU3MzUifQ==",
         project="kumars/Consumer-Complaint",
     )
 
