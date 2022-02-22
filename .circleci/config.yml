@@ -46,10 +46,10 @@ jobs:
       - *prepare_tox
       - *prepare_build_twine
       - *prepare_nltk
-      # - run:
-         # name: Test the model
-         # command: |
-          #  tox
+      - run:
+         name: Test the model
+         command: |
+           tox
       - run:
           name: Publish model to PyPi
           command: |
@@ -258,6 +258,8 @@ workflows:
           requires:
             - api_test_app
       - deploy_app_container_in_heroku
+          requires:
+            - api_test_app            
           # filters:
             # branches:
               # only:
