@@ -21,6 +21,10 @@ class AppConfig(BaseModel):
     training_data_file: str
     test_data_file: str
     model_save_file: str
+    neptune_project_name: str
+    neptune_diff_run: str
+    neptune_data_fetch_run: str
+    neptune_current_run: str
 
 
 class ParamsLstm(BaseModel):

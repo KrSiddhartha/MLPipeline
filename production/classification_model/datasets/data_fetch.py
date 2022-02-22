@@ -1,12 +1,13 @@
 import os
 
+import neptune.new as neptune
 import pandas as pd
 import wget
 from feature_engine.imputation import DropMissingData
 from sklearn.pipeline import Pipeline
 
 import classification_model.preprocessing.preprocessorRawdata as pp
-from classification_model.config.core import config
+from classification_model.config.core import DATASET_DIR, config
 
 pth = "classification_model/datasets/"
 default_pth = os.getcwd()
@@ -80,7 +81,15 @@ if __name__ == "__main__":
         else:
             print("Data already there")
     else:
-        print("Fetching data")
-        datafetch()
+        print("Fetching data from registry")
+        run = neptune.init(
+            project=config.app_config.neptune_project_name,
+            run=config.app_config.neptune_data_fetch_run,
+        )
+        save_path_train = DATASET_DIR / "train.csv"
+        save_path_test = DATASET_DIR / "test.csv"
+        run["train/train.csv"].download(save_path_train.__str__())
+        run["test/test.csv"].download(save_path_test.__str__())
+        run.stop()
 
     os.chdir(default_pth)

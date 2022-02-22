@@ -6,8 +6,13 @@ data_referesh: False
 data_url: "https://files.consumerfinance.gov/ccdb/complaints.csv.zip"
 training_data_file: train.csv
 test_data_file: test.csv
-
 model_save_file: classification_model_output_v
+
+# Model Registry
+neptune_project_name: kumars/Consumer-Complaint
+neptune_diff_run: CON-63
+neptune_data_fetch_run: CON-63
+neptune_current_run: ""
 
 # Dependent variable
 DEPENDENT_FEATURES: Product
@@ -21,7 +26,7 @@ MAX_LENGHT: 140
 # Model parameters
 PARAMS_LSTM:
   MODEL_NAME: Bi-Directional-LSTM
-  batch_size: 512
+  batch_size: 50
   epochs: 100
   lr: 0.0003
   validation_split: 0.3
@@ -39,8 +44,8 @@ PARAMS_WORD2VEC:
 RANDOM_STATE: 0
 
 # Sample size
-TRAIN_SIZE: 10000
-TEST_SIZE: 3000
+TRAIN_SIZE: 500
+TEST_SIZE: 150
 
 # Target mapping
 PRODUCT_MAPPING:
