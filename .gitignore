@@ -20,9 +20,11 @@ production/classification_model/datasets/train.csv
 production/classification_model/datasets/test.csv
 api/app/
 api/comp_classify_api/
+research/train.csv
+research/test.csv
+research/consumerComplaintClassification.ipynb
 research/complaints.csv
 research/complaints.csv.zip
 research/valid.csv
 research/Bi-Directional-LSTM_model.h5
 research/LSTM_model.h5
-Machine Learning Pipeline.docx

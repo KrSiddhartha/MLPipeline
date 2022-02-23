@@ -254,9 +254,9 @@ workflows:
       - api_test_app:
           requires:
             - production_test_and_upload_classification_model
-      - api_deploy_app_to_heroku:
-          requires:
-            - api_test_app
+      # - api_deploy_app_to_heroku:
+          # requires:
+            # - api_test_app
       - deploy_app_container_in_heroku:
           requires:
             - api_test_app      
